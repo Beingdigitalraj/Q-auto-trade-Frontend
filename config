@@ -33,3 +33,16 @@ export const SECURITY_CONFIG = {
     MULTI_FACTOR_AUTH: true,
     MAX_FAILED_ATTEMPTS: 3,
 };
+cache.js
+const redis = require("redis");
+const client = redis.createClient();
+
+export const cacheData = async (key, value) => {
+  await client.set(key, JSON.stringify(value), "EX", 3600);
+};
+security.js
+const jwt = require("jsonwebtoken");
+
+export const generateToken = (user) => {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
