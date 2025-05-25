@@ -6,6 +6,10 @@ export const CONFIG = {
     MAX_TRADES: 100,
     SECURITY_LEVEL: "HIGH",
 };
+.env
+NEXT_PUBLIC_API_KEY="your_api_key_here"
+NEXT_PUBLIC_RPC_URL="https://bsc-dataseed.binance.org/"
+NEXT_PUBLIC_PRIVATE_KEY="your_wallet_private_key"
 web3.js
 import { ethers } from "ethers";
 import { CONFIG } from "./settings";
