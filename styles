@@ -1,1 +1,5 @@
-
+global.cs
+body {
+  background-color: #121212;
+  color: #fff;
+}
