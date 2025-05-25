@@ -46,3 +46,25 @@ const jwt = require("jsonwebtoken");
 export const generateToken = (user) => {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
+api.security.js
+import rateLimit from "express-rate-limit";
+
+export const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit 100 requests per IP
+  message: "Too many requests, please try again later.",
+});
+logs.js
+import winston from "winston";
+
+export const logger = winston.createLogger({
+  level: "info",
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+  ],
+});
+
+export const logError = (error) => {
+  logger.error(`❌ Error: ${error.message}`);
+};
