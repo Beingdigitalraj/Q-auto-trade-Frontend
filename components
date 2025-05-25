@@ -64,3 +64,43 @@ const WalletConnect = () => {
 };
 
 export default WalletConnect;
+MarketData.js
+import { useEffect, useState } from "react";
+import { getMarketPrediction } from "../utils/ai-trading";
+
+const MarketData = () => {
+  const [prediction, setPrediction] = useState(null);
+
+  useEffect(() => {
+    const fetchPrediction = async () => {
+      const result = await getMarketPrediction();
+      setPrediction(result);
+    };
+    fetchPrediction();
+  }, []);
+
+  return (
+    <div className="market-data">
+      <h2>AI Market Prediction</h2>
+      <p>{prediction ? `Trend: ${prediction}` : "Loading..."}</p>
+    </div>
+  );
+};
+
+export default MarketData;
+SecurityAlart.js
+import { detectPhishing } from "../utils/security";
+
+const SecurityAlert = ({ url }) => {
+  return (
+    <div className="security-alert">
+      {detectPhishing(url) ? (
+        <p className="alert-danger">⚠ Warning: Possible phishing attempt detected!</p>
+      ) : (
+        <p className="alert-safe">✅ Safe website</p>
+      )}
+    </div>
+  );
+};
+
+export default SecurityAlert;
