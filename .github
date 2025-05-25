@@ -1,3 +1,6 @@
+mkdir .github
+cd .github
+mkdir workflows
 workflows
 deploy.yml
 name: Deploy Q Auto Trade  
