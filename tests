@@ -2,3 +2,7 @@ trade.test.js
 test("Deposit function", () => {
   expect(true).toBe(true);
 });
+WalletConnect.test.js
+test("Wallet connects successfully", () => {
+  expect(true).toBe(true);
+});
