@@ -1,1 +1,23 @@
-
+{
+  "name": "q-auto-trade",
+  "version": "1.0.0",
+  "description": "A Web3 trading platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "npm run build",
+    "test": "npm test"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.0.3",
+    "next": "^14.0.0",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.42.0"
+  },
+  "keywords": ["web3", "trading", "crypto"],
+  "author": "Your Name",
+  "license": "MIT"
+}
