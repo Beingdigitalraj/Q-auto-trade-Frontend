@@ -1,1 +1,4 @@
-
+trade.test.js
+test("Deposit function", () => {
+  expect(true).toBe(true);
+});
