@@ -19,3 +19,7 @@ security.js
 export const verifyUser = (userAddress) => {
     return userAddress.startsWith("0x") && userAddress.length === 42;
 };
+export const detectPhishing = (url) => {
+    const suspiciousPatterns = ["fake", "scam", "phish"];
+    return suspiciousPatterns.some((pattern) => url.includes(pattern));
+};
