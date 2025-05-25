@@ -1,4 +1,4 @@
-workflows/deploy.yml
+.github/workflows/deploy.yml
 name: Deploy Q Auto Trade  
 on:  
   push:  
