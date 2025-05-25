@@ -8,3 +8,59 @@ const Button = ({ text, onClick, loading }) => {
 };
 
 export default Button;
+TradingForm.js
+import { useState } from "react";
+import Button from "./Button";
+
+const TradingForm = ({ onTrade }) => {
+  const [amount, setAmount] = useState("");
+  
+  return (
+    <div className="trading-form">
+      <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+      <Button text="Execute Trade" onClick={() => onTrade(amount)} />
+    </div>
+  );
+};
+
+export default TradingForm;
+TraderHistory.js
+const TradeHistory = ({ history }) => {
+  return (
+    <div className="trade-history">
+      {history.map((trade, index) => (
+        <div key={index} className="trade-item">
+          {trade.amount} {trade.token} - {trade.status}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default TradeHistory;
+WalletConnect.js
+import { ethers } from "ethers";
+import { useState } from "react";
+
+const WalletConnect = () => {
+  const [walletAddress, setWalletAddress] = useState("");
+
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setWalletAddress(accounts[0]);
+    } else {
+      alert("MetaMask not detected!");
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={connectWallet}>Connect Wallet</button>
+      {walletAddress && <p>Connected: {walletAddress}</p>}
+    </div>
+  );
+};
+
+export default WalletConnect;
