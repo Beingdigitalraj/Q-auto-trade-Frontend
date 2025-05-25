@@ -1,1 +1,8 @@
+index.js
+import Button from "../components/Button";
 
+const Home = () => {
+  return <Button text="Start Trading" onClick={() => alert("Trade started!")} />;
+};
+
+export default Home;
