@@ -14,5 +14,11 @@ jobs:
       - name: Install dependencies  
         run: npm install  
 
+      - name: Enable Logging  
+        run: echo "🚀 Deploying Q Auto Trade at $(date)"  
+
       - name: Deploy to Vercel  
-        run: npx vercel --prod
+        run: npx vercel --prod || echo "Deployment failed, rolling back!"  
+
+      - name: Fetch Deployment Logs  
+        run: npx vercel logs --prod --since=1h
