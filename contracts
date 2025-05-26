@@ -54,7 +54,7 @@ function withdraw(uint256 amount) public {
 }
 mapping(address => uint256) public withdrawalLimits;
 
-function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
+function setWithdrawalLimit
     mapping(address => uint256) public withdrawalLimits;
 
 function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
