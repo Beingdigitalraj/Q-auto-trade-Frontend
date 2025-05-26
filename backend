@@ -171,26 +171,6 @@ router.post("/execute", (req, res) => {
 });
 
 export default router;
-routes/tradeRoute.js import express from "express";
-import { validateTrade } from "../middleware/security.js";
-import { detectFraud } from "../middleware/fraudDetection.js";
-
-const router = express.Router();
-
-router.post("/execute", async (req, res) => {
-  try {
-    validateTrade(req.body);
-
-    const fraudResult = await detectFraud(req.body);
-    if (fraudResult.fraud) return res.status(403).json({ message: fraudResult.message });
-
-    res.json({ message: "✅ Trade executed successfully!" });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-export default router;
 routes/authRoutes.js import express from "express";
 import { authenticateBiometric } from "../middleware/biometricAuth.js";
 
