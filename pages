@@ -1,8 +1,52 @@
 index.js
+import React from "react";
+import Navbar from "../components/Navbar";
+import TradingChart from "../components/TradingChart";
+import OrderBook from "../components/OrderBook";
+import TradingForm from "../components/TradingForm";
 import Button from "../components/Button";
 
 const Home = () => {
-  return <Button text="Start Trading" onClick={() => alert("Trade started!")} />;
+  return (
+    <div>
+      <Navbar />
+      <h1>Welcome to QAutoTrade</h1>
+      <TradingChart />
+      <TradingForm />
+      <OrderBook />
+      <Button text="Start Trading" onClick={() => alert("Trade started!")} />
+    </div>
+  );
 };
 
 export default Home;
+trading.js
+import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import TradingChart from "../components/TradingChart";
+import OrderBook from "../components/OrderBook";
+import TradingForm from "../components/TradingForm";
+import Button from "../components/Button";
+
+const Trading = () => {
+  const [tradeStatus, setTradeStatus] = useState("Awaiting Order");
+
+  const handleTradeExecution = () => {
+    setTradeStatus("Trade Executed!");
+    alert("Your trade has been successfully placed!");
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <h1>Trading Dashboard</h1>
+      <TradingChart />
+      <OrderBook />
+      <TradingForm />
+      <h3>Status: {tradeStatus}</h3>
+      <Button text="Execute Trade" onClick={handleTradeExecution} />
+    </div>
+  );
+};
+
+export default Trading;
