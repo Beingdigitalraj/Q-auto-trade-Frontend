@@ -1,2 +1,5 @@
 
 backend/middleware
+touch backend/middleware/security.js
+touch backend/middleware/auth.js
+touch backend/middleware/rateLimiter.js
