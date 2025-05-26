@@ -119,7 +119,7 @@ export const distributeLoad = () => {
   currentServer = (currentServer + 1) % servers.length;
   return servers[currentServer];
 };
-config/datanase.js
+datanase.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
