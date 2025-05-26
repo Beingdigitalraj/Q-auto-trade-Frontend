@@ -31,7 +31,7 @@ export const verifyToken = (req, res, next) => {
     next();
   });
 };
-backend/middleware/rateLimit.js
+backend/middleware/rateLimiter.js
 import rateLimit from "express-rate-limit";
 
 export const apiLimiter = rateLimit({
@@ -55,3 +55,8 @@ app.use(apiLimiter);
 app.use("/api/trades", verifyToken, validateTrade, tradeRoutes);
 
 app.listen(5000, () => console.log("✅ Server running on port 5000"));
+backend/.env
+JWT_SECRET=your_jwt_secret_key_here
+API_URL=https://api.qautotrade.com
+MONGO_URI=mongodb+srv://your-mongo-uri
+npm install express jsonwebtoken dotenv express-rate-limit
