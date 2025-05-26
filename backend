@@ -2,6 +2,7 @@
 API_URL=https://api.qautotrade.com
 MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
 NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
+BIOMETRIC_SECRET_KEY=randomly_generated_secret
 server.js import express from "express";
 import dotenv from "dotenv";
 
@@ -78,21 +79,6 @@ middleware/mfa.js export const generateOTP = () => {
     step: 30, // OTP expires in 30 seconds
   });
 };
-routes/tradeRoutes.js import express from "express";
-import { validateTrade } from "../middleware/security.js";
-
-const router = express.Router();
-
-router.post("/execute", (req, res) => {
-  try {
-    validateTrade(req.body);
-    res.json({ message: "Trade executed successfully!" });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-export default router;
 middleware/device2fa.js import speakeasy from "speakeasy";
 import qrcode from "qrcode";
 import jwt from "jsonwebtoken";
@@ -129,7 +115,45 @@ export const verify2FA = (req, res) => {
 
   res.json({ message: "2FA Verified!", authToken });
 };
+middleware/biometricAuth.js import passport from "passport";
+import { WebAuthnStrategy } from "passport-webauthn";
 
+passport.use(
+  new WebAuthnStrategy((userId, done) => {
+    const user = getUserFromDB(userId);
+    if (!user) return done(null, false);
+    done(null, user);
+  })
+);
+
+export const authenticateBiometric = passport.authenticate("webauthn", {
+  failureRedirect: "/login",
+});
+routes/tradeRoutes.js import express from "express";
+import { validateTrade } from "../middleware/security.js";
+
+const router = express.Router();
+
+router.post("/execute", (req, res) => {
+  try {
+    validateTrade(req.body);
+    res.json({ message: "Trade executed successfully!" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+export default router;
+routes/authRoutes.js import express from "express";
+import { authenticateBiometric } from "../middleware/biometricAuth.js";
+
+const router = express.Router();
+
+router.post("/login-biometric", authenticateBiometric, (req, res) => {
+  res.json({ message: "Biometric authentication successful!", user: req.user });
+});
+
+export default router;
 web3.js import { ethers } from "ethers";
 import dotenv from "dotenv";
 
