@@ -14,7 +14,7 @@ const Home = () => {
       <TradingChart />
       <TradingForm />
       <OrderBook />
-      <Button text="Start Trading" onClick={() => alert("Trade started!")} />
+      <Button text="Execute Trade" onClick={handleTradeExecution} />
     </div>
   );
 };
