@@ -43,6 +43,8 @@ contract Trade is Ownable, ReentrancyGuard {
     }
 
     // Set withdrawal limits (Only Owner)
-    function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
-        require(newLimit > 0, "Withdrawal limit must be positive");
-        withdrawalLimits
+    mapping(address => uint256) public withdrawalLimits;
+
+function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
+    require(newLimit > 0, "Withdrawal limit must be positive");
+    withdrawalLimits
