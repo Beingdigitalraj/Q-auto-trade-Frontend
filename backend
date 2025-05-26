@@ -129,6 +129,33 @@ passport.use(
 export const authenticateBiometric = passport.authenticate("webauthn", {
   failureRedirect: "/login",
 });
+middleware/FraudDetection.js import * as tf from "@tensorflow/tfjs-node";
+import axios from "axios";
+import _ from "lodash";
+
+// Load AI model (placeholder for training)
+const model = tf.sequential();
+model.add(tf.layers.dense({ units: 10, inputShape: [3], activation: "relu" }));
+model.add(tf.layers.dense({ units: 1, activation: "sigmoid" }));
+model.compile({ optimizer: "adam", loss: "binaryCrossentropy" });
+
+export const detectFraud = async (transaction) => {
+  const { sender, amount, frequency } = transaction;
+
+  // Fetch wallet transaction history
+  const { data } = await axios.get(`https://blockchain-api.com/user/${sender}`);
+
+  // Identify unusual patterns
+  const abnormalActivity = _.filter(data.transactions, (txn) => txn.amount > amount * 5);
+  
+  // AI model predicts fraud probability
+  const prediction = model.predict(tf.tensor2d([[amount, frequency, abnormalActivity.length]])).dataSync()[0];
+
+  if (prediction > 0.8) {
+    return { fraud: true, message: "⚠️ Suspicious transaction detected!" };
+  }
+  return { fraud: false, message: "✅ Transaction looks safe." };
+};
 routes/tradeRoutes.js import express from "express";
 import { validateTrade } from "../middleware/security.js";
 
@@ -138,6 +165,26 @@ router.post("/execute", (req, res) => {
   try {
     validateTrade(req.body);
     res.json({ message: "Trade executed successfully!" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+export default router;
+routes/tradeRoute.js import express from "express";
+import { validateTrade } from "../middleware/security.js";
+import { detectFraud } from "../middleware/fraudDetection.js";
+
+const router = express.Router();
+
+router.post("/execute", async (req, res) => {
+  try {
+    validateTrade(req.body);
+
+    const fraudResult = await detectFraud(req.body);
+    if (fraudResult.fraud) return res.status(403).json({ message: fraudResult.message });
+
+    res.json({ message: "✅ Trade executed successfully!" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
