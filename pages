@@ -50,3 +50,15 @@ const Trading = () => {
 };
 
 export default Trading;
+api/trade.js
+import { validateTrade } from "../../middleware/security";
+
+export default function handler(req, res) {
+  try {
+    const tradeData = req.body;
+    validateTrade(tradeData);
+    res.status(200).json({ message: "Trade executed successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
