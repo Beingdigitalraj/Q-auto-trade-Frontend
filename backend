@@ -1,0 +1,8 @@
+backend/middleware
+touch backend/middleware/security.js
+touch backend/middleware/auth.js
+touch backend/middleware/rateLimiter.js
+server.js
+import { apiLimiter } from "./middleware/rateLimiter.js";
+import { verifyToken } from "./middleware/auth.js";
+import { validateTrade } from "./middleware/security.js";
