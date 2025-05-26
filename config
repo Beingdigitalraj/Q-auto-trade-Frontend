@@ -1,3 +1,11 @@
+// config/env.js
+const ENV = {
+  API_BASE_URL: process.env.API_BASE_URL || "https://api.yourplatform.com",
+  BLOCKCHAIN_RPC_URL: process.env.BLOCKCHAIN_RPC_URL || "https://bsc-dataseed.binance.org/",
+  SMART_CONTRACT_ADDRESS: process.env.SMART_CONTRACT_ADDRESS || "0x123456789abcdef",
+};
+
+export default ENV;
 setting.js
 export const CONFIG = {
     API_URL: "https://api.qautotrade.com",
