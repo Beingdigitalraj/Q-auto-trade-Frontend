@@ -93,3 +93,23 @@ API_URL=https://api.qautotrade.com
 MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
 NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
 OTP_SECRET=your_otp_secret_key
+auth.js
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const generateToken = (user) => {
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
+
+export const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Unauthorized access" });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    req.user = decoded;
+    next();
+  });
+};
