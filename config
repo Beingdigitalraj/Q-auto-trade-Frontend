@@ -201,7 +201,7 @@ const userSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("User", userSchema);
-routes/tradeToutes.js
+routes/tradeRoutes.js
 import express from "express";
 import { createTrade, executeTrade } from "../controllers/tradeController.js";
 import { verifyToken } from "../middleware/auth.js";
@@ -263,3 +263,4 @@ app.use("/api/trades", tradeRoutes);
 
 connectDB();
 app.listen(5000, () => console.log("✅ Server running on port 5000"));
+tradeRoutes.js
