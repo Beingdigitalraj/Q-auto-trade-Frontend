@@ -93,6 +93,43 @@ router.post("/execute", (req, res) => {
 });
 
 export default router;
+middleware/device2fa.js import speakeasy from "speakeasy";
+import qrcode from "qrcode";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const generate2FA = (req, res) => {
+  const secret = speakeasy.generateSecret({ length: 20 });
+
+  qrcode.toDataURL(secret.otpauth_url, (err, image_url) => {
+    if (err) return res.status(500).json({ message: "Error generating QR code" });
+
+    res.json({
+      secret: secret.base32,
+      qrCode: image_url,
+    });
+  });
+};
+
+export const verify2FA = (req, res) => {
+  const { token, secret } = req.body;
+
+  const verified = speakeasy.totp.verify({
+    secret,
+    encoding: "base32",
+    token,
+    window: 1,
+  });
+
+  if (!verified) return res.status(403).json({ message: "Invalid 2FA token" });
+
+  const authToken = jwt.sign({ user: req.user }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  res.json({ message: "2FA Verified!", authToken });
+};
+
 web3.js import { ethers } from "ethers";
 import dotenv from "dotenv";
 
