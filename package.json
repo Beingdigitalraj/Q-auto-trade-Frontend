@@ -26,5 +26,5 @@
   "keywords": ["web3", "trading", "crypto"],
   "author": "Your Name",
   "license": "MIT"
+  "extends": ["next/core-web-vitals"]
 }
-"extends": ["next/core-web-vitals"]
