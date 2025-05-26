@@ -66,5 +66,6 @@ function executeTrade(uint256 orderId) public onlyOwner {
 }
 mapping(address => uint256) public withdrawalLimits;
 
-function setWithdrawalLimit(address user) public onlyOwner {
+function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
+    require(newLimit > 0, "Withdrawal limit must be positive");
     withdrawalLimits
