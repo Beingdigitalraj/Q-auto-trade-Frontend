@@ -17,8 +17,14 @@ jobs:
       - name: Enable Logging  
         run: echo "🚀 Deploying Q Auto Trade at $(date)"  
 
+      - name: Authenticate Vercel  
+        run: npx vercel login || echo "Vercel login failed!"  
+
       - name: Deploy to Vercel  
-        run: npx vercel --prod || echo "Deployment failed, rolling back!"  
+        run: npx vercel --prod || (echo "Deployment failed! Rolling back..." && npx vercel rollback)  
 
       - name: Fetch Deployment Logs  
-        run: npx vercel logs --prod --since=1h
+        run: npx vercel logs --prod --limit=50  
+
+      - name: Debug Deployment  
+        run: npx vercel inspect || echo "Error Debugging Vercel Deployment"
