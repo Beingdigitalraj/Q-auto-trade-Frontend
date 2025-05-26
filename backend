@@ -87,3 +87,9 @@ export const getBalance = async (address) => {
     const balance = await provider.getBalance(address);
     return ethers.utils.formatEther(balance);
 };
+.env
+JWT_SECRET=your_jwt_secret_key_here
+API_URL=https://api.qautotrade.com
+MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
+NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
+OTP_SECRET=your_otp_secret_key
