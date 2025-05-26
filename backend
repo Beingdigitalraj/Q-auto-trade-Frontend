@@ -60,3 +60,14 @@ JWT_SECRET=your_jwt_secret_key_here
 API_URL=https://api.qautotrade.com
 MONGO_URI=mongodb+srv://your-mongo-uri
 npm install express jsonwebtoken dotenv express-rate-limit
+web3.js
+import { ethers } from "ethers";
+import { CONFIG } from "./settings";
+
+const provider = new ethers.providers.JsonRpcProvider(CONFIG.RPC_URL);
+const signer = new ethers.Wallet(CONFIG.PRIVATE_KEY, provider);
+
+export const getBalance = async (address) => {
+    const balance = await provider.getBalance(address);
+    return ethers.utils.formatEther(balance);
+};
