@@ -78,3 +78,9 @@ JWT_SECRET=your_jwt_secret_key_here
 API_URL=https://api.qautotrade.com
 MONGO_URI=mongodb+srv://your-mongo-uri
 npm install express jsonwebtoken dotenv express-rate-limit
+.env
+JWT_SECRET=your_jwt_secret_key_here
+API_URL=https://api.qautotrade.com
+MONGO_URI=mongodb+srv://your-mongo-uri
+NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
+OTP_SECRET=your_otp_secret_key
