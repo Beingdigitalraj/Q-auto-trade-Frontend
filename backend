@@ -71,6 +71,13 @@ export const apiLimiter = rateLimit({
   max: 20, // ✅ Lowered limit for better security
   message: "Too many requests, please try again later.",
 });
+middleware/mfa.js export const generateOTP = () => {
+  return speakeasy.totp({
+    secret: process.env.OTP_SECRET,
+    encoding: "base32",
+    step: 30, // OTP expires in 30 seconds
+  });
+};
 routes/tradeRoutes.js import express from "express";
 import { validateTrade } from "../middleware/security.js";
 
