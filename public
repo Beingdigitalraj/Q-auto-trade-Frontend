@@ -1,1 +1,3 @@
-logo.png
+ logo.png<img src="/logo.png" alt="Q Auto Trade Logo" width="150" height="150" />
+ favicon.ico<link rel="icon" href="/favicon.ico" />
+ images/<img src="/logo.png" alt="Q Auto Trade Logo" width="150" height="150" />
