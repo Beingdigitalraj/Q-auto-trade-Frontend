@@ -55,16 +55,7 @@ function withdraw(uint256 amount) public {
 mapping(address => uint256) public withdrawalLimits;
 
 function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
-    require(newLimit > 0, "Withdrawal limit must be positive");
-    withdrawalLimits
-function executeTrade(uint256 orderId) public onlyOwner {
-    require(!tradeOrders[orderId].executed, "Trade already executed");
-    require(tradeOrders[orderId].amount > 0, "Invalid trade order");
-
-    payable(tradeOrders[orderId].trader).transfer(tradeOrders[orderId].amount);
-    tradeOrders[orderId].executed = true;
-}
-mapping(address => uint256) public withdrawalLimits;
+    mapping(address => uint256) public withdrawalLimits;
 
 function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
     require(newLimit > 0, "Withdrawal limit must be positive");
