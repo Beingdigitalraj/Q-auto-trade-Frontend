@@ -106,7 +106,8 @@ package.json {
     "dev": "nodemon server.js",
     "test": "jest"
   },
- logger.js import winston from "winston";
+ logger.js
+import winston from "winston";
 
 const logger = winston.createLogger({
   level: "info",
@@ -114,7 +115,11 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.File({ filename: "logs/error.log", level: "error" }),
     new winston.transports.Console(),
-  
+  ],
+});
+
 export default logger;
+
+// Example usage:
 import logger from "../config/logger.js";
 logger.error("Trade execution failed due to invalid data.");
