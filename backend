@@ -1,9 +1,6 @@
 .env JWT_SECRET=your_jwt_secret_key_here
 API_URL=https://api.qautotrade.com
-MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
-NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
-MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
-
+ 
 server.js import express from "express";
 import dotenv from "dotenv";
 import tradeRoutes from "./routes/tradeRoutes.js";
