@@ -74,7 +74,7 @@ export const getBalance = async (address) => {
 backend/.env
 JWT_SECRET=your_jwt_secret_key_here
 API_URL=https://api.qautotrade.com
-MONGO_URI=mongodb+srv://your-mongo-uri
+MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
 NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
 web3.js
 import { ethers } from "ethers";
