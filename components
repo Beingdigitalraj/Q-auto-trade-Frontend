@@ -32,7 +32,7 @@ const TradingChart = () => {
 };
 
 export default TradingChart;
-Butten.js
+Button.js
 import React from "react";
 
 const Button = ({ text, onClick }) => {
