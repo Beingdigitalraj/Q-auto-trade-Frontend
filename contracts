@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.8;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -22,6 +22,7 @@ contract Trade is Ownable, ReentrancyGuard {
     event Withdrawal(address indexed user, uint256 amount);
     event TradeCreated(uint256 orderId, address indexed trader, uint256 amount, uint256 price);
     event TradeExecuted(uint256 orderId, address indexed trader);
+    event WithdrawalLimitSet(address indexed user, uint256 newLimit);
 
     // Deposit funds to the contract
     function deposit() public payable {
@@ -42,9 +43,7 @@ contract Trade is Ownable, ReentrancyGuard {
         emit Withdrawal(msg.sender, amount);
     }
 
-    // Set withdrawal limits (Only Owner)
-    mapping(address => uint256) public withdrawalLimits;
-
-function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
-    require(newLimit > 0, "Withdrawal limit must be positive");
-    withdrawalLimits
+    // Set withdrawal limits securely (Only Owner)
+    function setWithdrawalLimit(address user, uint256 newLimit) public onlyOwner {
+        require(newLimit > 0, "Withdrawal limit must be positive");
+        withdrawalLimits
