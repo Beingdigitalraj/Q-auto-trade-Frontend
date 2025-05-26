@@ -1,23 +1,41 @@
 navbar.js
 const Navbar = () => {
   return (
-    <nav style={{ display: "flex", justifyContent: "space-between", padding: "10px", backgroundColor: "#222", color: "#fff" }}>
+    <nav style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "10px",
+      backgroundColor: "#222",
+      color: "#fff",
+      flexWrap: "wrap"
+    }}>
       <h2>QAutoTrade</h2>
-      <button>Login</button>
+      <button style={{ padding: "8px 12px", fontSize: "14px" }}>Login</button>
     </nav>
   );
 };
+
+export default Navbar;
+
 TradingChart.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const TradingChart = () => {
   const [prices, setPrices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPrices() {
-      const response = await axios.get("https://api.marketdata.com/prices");
-      setPrices(response.data);
+      try {
+        const response = await axios.get("https://api.marketdata.com/prices");
+        setPrices(response.data);
+      } catch (error) {
+        console.error("Failed to fetch prices:", error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchPrices();
   }, []);
@@ -25,7 +43,7 @@ const TradingChart = () => {
   return (
     <div>
       <h2>Market Price History</h2>
-      {prices.map((price, index) => (
+      {loading ? <p>Loading prices...</p> : prices.map((price, index) => (
         <p key={index}>Price: ${price}</p>
       ))}
     </div>
@@ -33,9 +51,15 @@ const TradingChart = () => {
 };
 
 export default TradingChart;
-
 Button.js
- const Button = ({ text, onClick, disabled = false }) => {
+ const Button = ({ text, onClick, disabled = false, variant = "primary" }) => {
+  const buttonStyles = {
+    primary: { backgroundColor: "#007bff", color: "#fff" },
+    secondary: { backgroundColor: "#6c757d", color: "#fff" },
+    danger: { backgroundColor: "#dc3545", color: "#fff" },
+    disabled: { backgroundColor: "#ccc", cursor: "not-allowed" }
+  };
+
   return (
     <button
       onClick={onClick}
@@ -44,11 +68,10 @@ Button.js
         padding: "10px 20px",
         fontSize: "16px",
         fontWeight: "bold",
-        backgroundColor: disabled ? "#ccc" : "#007bff",
-        color: "#fff",
         border: "none",
         borderRadius: "5px",
         cursor: disabled ? "not-allowed" : "pointer",
+        ...(disabled ? buttonStyles.disabled : buttonStyles[variant]),
       }}
     >
       {text}
