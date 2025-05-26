@@ -6,6 +6,15 @@ const ENV = {
 };
 
 export default ENV;
+.env
+API_URL=https://api.qautotrade.com
+BLOCKCHAIN_RPC_URL=https://bsc-dataseed.binance.org/
+SMART_CONTRACT_ADDRESS=0x123456789abcdef
+MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/yourDatabaseName?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key
+NEXT_PUBLIC_PRIVATE_KEY=your_wallet_private_key
+OTP_SECRET=your_otp_secret_key
+
 setting.js
 export const CONFIG = {
     API_URL: "https://api.qautotrade.com",
@@ -14,6 +23,7 @@ export const CONFIG = {
     MAX_TRADES: 100,
     SECURITY_LEVEL: "HIGH",
 };
+
 .env
 NEXT_PUBLIC_API_KEY="your_api_key_here"
 NEXT_PUBLIC_RPC_URL="https://bsc-dataseed.binance.org/"
@@ -23,24 +33,27 @@ import { ethers } from "ethers";
 import { CONFIG } from "./settings";
 
 const provider = new ethers.providers.JsonRpcProvider(CONFIG.RPC_URL);
-const signer = new ethers.Wallet(CONFIG.PRIVATE_KEY, provider);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
 export const getBalance = async (address) => {
     const balance = await provider.getBalance(address);
     return ethers.utils.formatEther(balance);
 };
+
 ai.js
 export const AI_CONFIG = {
     MODEL_URL: "https://api.marketdata.com/predict",
     CONFIDENCE_THRESHOLD: 0.85,
     MAX_ANALYSIS_DEPTH: 50,
 };
+
 security.js
 export const SECURITY_CONFIG = {
     ENABLE_ANTI_PHISHING: true,
     MULTI_FACTOR_AUTH: true,
     MAX_FAILED_ATTEMPTS: 3,
 };
+
 cache.js
 const redis = require("redis");
 const client = redis.createClient();
@@ -48,20 +61,22 @@ const client = redis.createClient();
 export const cacheData = async (key, value) => {
   await client.set(key, JSON.stringify(value), "EX", 3600);
 };
+
 security.js
 const jwt = require("jsonwebtoken");
 
 export const generateToken = (user) => {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
-api.security.js
-import rateLimit from "express-rate-limit";
 
-export const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit 100 requests per IP
-  message: "Too many requests, please try again later.",
-});
+api.security.js
+export const apiLimiter = (maxRequests) =>
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: maxRequests, // Adjust limit dynamically
+    message: "Too many requests, please try again later.",
+  });
+
 logs.js
 import winston from "winston";
 
@@ -76,6 +91,7 @@ export const logger = winston.createLogger({
 export const logError = (error) => {
   logger.error(`❌ Error: ${error.message}`);
 };
+
 auth.js
 import speakeasy from "speakeasy";
 
@@ -85,6 +101,7 @@ export const generateOTP = () => {
     encoding: "base32",
   });
 };
+
  monitoring.js
 import winston from "winston";
 
@@ -99,11 +116,20 @@ export const logger = winston.createLogger({
 export const trackEvent = (event) => {
   logger.info(`📡 Event Tracked: ${event}`);
 };
+
 error-handler.js
-export const handleError = (error) => {
+export const handleError = async (error, retryFunction) => {
   console.error(`❌ Error Detected: ${error.message}`);
+
+  // Retry logic for network-related errors
+  if (error.response?.status >= 500) {
+    console.log("Retrying request...");
+    return await retryFunction();
+  }
+
   return { success: false, message: "An unexpected error occurred, retrying..." };
 };
+
 security.js
 export const SECURITY_CONFIG = {
     ENABLE_ANTI_PHISHING: true,
@@ -111,14 +137,24 @@ export const SECURITY_CONFIG = {
     MAX_FAILED_ATTEMPTS: 3,
     SMART_CONTRACT_VALIDATION: true,
 };
+
 load-balance.js
-const servers = ["server1", "server2", "server3"];
+const servers = [
+  { name: "server1", status: "healthy" },
+  { name: "server2", status: "healthy" },
+  { name: "server3", status: "offline" },
+];
+
 let currentServer = 0;
 
 export const distributeLoad = () => {
-  currentServer = (currentServer + 1) % servers.length;
-  return servers[currentServer];
+  const availableServers = servers.filter((server) => server.status === "healthy");
+  if (availableServers.length === 0) return "No available servers!";
+  
+  currentServer = (currentServer + 1) % availableServers.length;
+  return availableServers[currentServer].name;
 };
+
 config/datanase.js
 https://github.com/Beingdigitalraj/Q-auto-trade-Frontend/tree/main;
 config/env.js
@@ -131,6 +167,7 @@ const ENV = {
 };
 
 export default ENV;
+
 middleware/security.js
 export const validateTrade = (tradeData) => {
   if (!tradeData.amount || tradeData.amount <= 0) {
@@ -140,6 +177,7 @@ export const validateTrade = (tradeData) => {
     throw new Error("Invalid trade price");
   }
 };
+
 middleware/auth.js
 import jwt from "jsonwebtoken";
 import ENV from "../config/env";
@@ -162,6 +200,7 @@ export const verifyToken = (req, res, next) => {
     next();
   });
 };
+
 model/Trade.js
 import mongoose from "mongoose";
 
@@ -173,6 +212,7 @@ const tradeSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("Trade", tradeSchema);
+
 model/user.js
 import mongoose from "mongoose";
 
@@ -221,6 +261,7 @@ export const executeTrade = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 services/web3Service.js
 import Web3 from "web3";
 import ENV from "../config/env";
@@ -231,6 +272,7 @@ export const getBalance = async (address) => {
   const balance = await web3.eth.getBalance(address);
   return web3.utils.fromWei(balance, "ether");
 };
+
 server.js
 import express from "express";
 import dotenv from "dotenv";
@@ -245,3 +287,5 @@ app.use("/api/trades", tradeRoutes);
 
 connectDB();
 app.listen(5000, () => console.log("✅ Server running on port 5000"));
+app.use("/api/public", apiLimiter(100)); // Public users
+app.use("/api/private", apiLimiter(50)); // Authenticated users
