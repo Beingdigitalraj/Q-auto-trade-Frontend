@@ -1,10 +1,44 @@
-components/Button.js
+navar.js
 import React from "react";
 
-const Button = ({ text, onClick, style }) => {
+const Navbar = () => {
   return (
-    <button 
-      onClick={onClick} 
+    <nav>
+      <h2>QAutoTrade</h2>
+      <button>Login</button>
+    </nav>
+  );
+};
+
+export default Navbar;
+trading.chart.js
+import React, { useEffect, useState } from "react";
+
+const TradingChart = () => {
+  const [prices, setPrices] = useState([]);
+
+  useEffect(() => {
+    setPrices([100, 120, 130, 110, 115]);
+  }, []);
+
+  return (
+    <div>
+      <h2>Market Price History</h2>
+      {prices.map((price, index) => (
+        <p key={index}>Price: ${price}</p>
+      ))}
+    </div>
+  );
+};
+
+export default TradingChart;
+Butten.js
+import React from "react";
+
+const Button = ({ text, onClick }) => {
+  return (
+    <button
+      onClick={onClick}
       style={{
         padding: "10px 20px",
         fontSize: "16px",
@@ -14,7 +48,6 @@ const Button = ({ text, onClick, style }) => {
         border: "none",
         borderRadius: "5px",
         cursor: "pointer",
-        ...style
       }}
     >
       {text}
