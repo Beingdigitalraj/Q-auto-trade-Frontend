@@ -1,24 +1,25 @@
 navbar.js
-import React from "react";
-
 const Navbar = () => {
   return (
-    <nav>
+    <nav style={{ display: "flex", justifyContent: "space-between", padding: "10px", backgroundColor: "#222", color: "#fff" }}>
       <h2>QAutoTrade</h2>
       <button>Login</button>
     </nav>
   );
 };
-
-export default Navbar;
-trading.chart.js
+TradingChart.js
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const TradingChart = () => {
   const [prices, setPrices] = useState([]);
 
   useEffect(() => {
-    setPrices([100, 120, 130, 110, 115]);
+    async function fetchPrices() {
+      const response = await axios.get("https://api.marketdata.com/prices");
+      setPrices(response.data);
+    }
+    fetchPrices();
   }, []);
 
   return (
@@ -32,22 +33,22 @@ const TradingChart = () => {
 };
 
 export default TradingChart;
-Button.js
-import React from "react";
 
-const Button = ({ text, onClick }) => {
+Button.js
+ const Button = ({ text, onClick, disabled = false }) => {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       style={{
         padding: "10px 20px",
         fontSize: "16px",
         fontWeight: "bold",
-        backgroundColor: "#007bff",
+        backgroundColor: disabled ? "#ccc" : "#007bff",
         color: "#fff",
         border: "none",
         borderRadius: "5px",
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
       }}
     >
       {text}
@@ -56,12 +57,3 @@ const Button = ({ text, onClick }) => {
 };
 
 export default Button;
-navbar.js
-const Navbar = () => {
-  return (
-    <nav style={{ display: "flex", justifyContent: "space-between", padding: "10px", backgroundColor: "#222", color: "#fff" }}>
-      <h2>QAutoTrade</h2>
-      <button>Login</button>
-    </nav>
-  );
-};
