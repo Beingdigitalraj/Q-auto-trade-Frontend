@@ -100,7 +100,25 @@ export const logger = winston.createLogger({
     new winston.transports.File({ filename: "logs/error.log", level: "error" }),
   ],
 });
-
 export const logError = (error) => {
   logger.error(`❌ Error: ${error.message}`);
+};
+web3Helper.js
+import Web3 from "web3";
+import { CONFIG } from "../config/setting";
+
+const web3 = new Web3(new Web3.providers.HttpProvider(CONFIG.RPC_URL));
+
+export const getBalance = async (address) => {
+  const balance = await web3.eth.getBalance(address);
+  return web3.utils.fromWei(balance, "ether");
+};
+middleware/security.js
+export const validateTrade = (tradeData) => {
+  if (!tradeData.amount || tradeData.amount <= 0) {
+    throw new Error("Invalid trade amount");
+  }
+  if (!tradeData.price || tradeData.price <= 0) {
+    throw new Error("Invalid trade price");
+  }
 };
