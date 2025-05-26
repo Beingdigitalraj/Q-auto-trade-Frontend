@@ -1,8 +1,22 @@
 trade.test.js
-test("Deposit function", () => {
-  expect(true).toBe(true);
+const { deposit } = require("../utils/trade");
+
+describe("Trade Functions", () => {
+  test("User can deposit tokens", () => {
+    const userBalance = 100;
+    const depositAmount = 50;
+    const newBalance = deposit(userBalance, depositAmount);
+    
+    expect(newBalance).toBe(150);
+  });
 });
+
 WalletConnect.test.js
-test("Wallet connects successfully", () => {
-  expect(true).toBe(true);
+const { connectWallet } = require("../utils/walletConnect");
+
+describe("Wallet Connection", () => {
+  test("Wallet connects successfully", () => {
+    const wallet = connectWallet();
+    expect(wallet.connected).toBe(true);
+  });
 });
